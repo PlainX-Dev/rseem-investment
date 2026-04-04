@@ -1,0 +1,53 @@
+{
+  "name": "Rseem Investment",
+  "description": "Premium venture capital & private equity website",
+  "version": 2,
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["ams"],
+  "env": {
+    "NEXT_PUBLIC_SITE_URL": {
+      "description": "Site URL",
+      "default": "https://rseem.com"
+    },
+    "NEXT_PUBLIC_GA_ID": {
+      "description": "Google Analytics ID (optional)",
+      "default": ""
+    }
+  },
+  "headers": [
+    {
+      "source": "/:path*{/}?",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/api/robots"
+    }
+  ]
+}
