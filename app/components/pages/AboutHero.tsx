@@ -1,10 +1,12 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 
 const AboutHero = () => {
   const t = useTranslations('about');
+  const locale = useLocale();
+  const isArabic = locale === 'ar';
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-rseem-dark via-rseem-navy to-rseem-dark pt-20">
@@ -37,7 +39,7 @@ const AboutHero = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rseem-teal/10 border border-rseem-teal/30 w-fit mx-auto"
           >
             <span className="w-2 h-2 bg-rseem-gold rounded-full animate-pulse" />
-            <span className="text-sm font-semibold text-rseem-gold">Company Overview</span>
+            <span className="text-sm font-semibold text-rseem-gold">{isArabic ? 'نظرة عامة على الشركة' : 'Company Overview'}</span>
           </motion.div>
 
           {/* Title */}
@@ -67,7 +69,7 @@ const AboutHero = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-lg text-gray-200 leading-relaxed max-w-2xl mx-auto"
           >
-            Understanding our journey, values, and commitment to excellence in the Saudi investment landscape.
+            {isArabic ? 'نتناول رحلتنا وقيمنا والتزامنا بالتميّز في المشهد الاستثماري السعودي.' : 'Understanding our journey, values, and commitment to excellence in the Saudi investment landscape.'}
           </motion.p>
         </motion.div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Shield, Star, Zap, Brain, Users, Target } from 'lucide-react';
@@ -16,7 +16,8 @@ const iconMap = {
 
 const AboutContent = () => {
   const t = useTranslations('about');
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const locale = useLocale();
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 180px 0px' });
 
   return (
     <section className="py-20 lg:py-32 bg-rseem-light">
@@ -72,7 +73,7 @@ const AboutContent = () => {
           className="mt-20"
         >
           <h2 className="text-4xl md:text-5xl font-bold font-display text-center text-rseem-dark mb-16">
-            Core Values & Strengths
+            {locale === 'ar' ? 'القيم الجوهرية ونقاط القوة' : 'Core Values & Strengths'}
           </h2>
 
           <motion.div

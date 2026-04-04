@@ -11,7 +11,15 @@
     "subheadline": "Driving Innovation and Growth Aligned with Vision 2030",
     "description": "At Rseem Investment Company, we bridge the gap between visionary ideas and successful execution. We invest capital, relationships, and expertise into non-traditional entrepreneurial projects across diverse sectors that align with Saudi Arabia's economic transformation.",
     "cta": "Schedule a Consultation",
-    "explore": "Explore Our Sectors"
+    "explore": "Explore Our Sectors",
+    "badge": "Saudi Vision 2030",
+    "statsYears": "Years",
+    "statsInvestments": "Investments",
+    "statsPartners": "Partners",
+    "cardVenture": "Venture Capital",
+    "cardPrivateEquity": "Private Equity",
+    "cardRealEstate": "Real Estate",
+    "scrollHint": "Scroll to explore"
   },
   "about": {
     "title": "About Rseem Investment Company",
@@ -61,6 +69,9 @@
     "title": "Investment Sectors & Services",
     "subtitle": "Diverse Opportunities, Unified Excellence",
     "description": "We focus on carefully selected service areas and sectors designed to build a distinctive portfolio that delivers added value to our shareholders and partners.",
+    "learnMore": "Learn More",
+    "partnershipPrompt": "Ready to explore partnership opportunities?",
+    "consultationCta": "Schedule Your Consultation",
     "sectors_list": [
       {
         "id": "venture-capital",
@@ -122,6 +133,44 @@
     "title": "Why Partner With Rseem?",
     "subtitle": "Your Trusted Investment Partner",
     "cta": "Begin Your Partnership",
+    "differentiatorsTitle": "What Sets Us Apart",
+    "readyPrompt": "Ready to partner with a leader in Saudi investment?",
+    "differentiators": [
+      {
+        "title": "Strategic Expertise",
+        "description": "Deep market knowledge and proven investment strategies"
+      },
+      {
+        "title": "Local Excellence",
+        "description": "Unmatched understanding of the Saudi business ecosystem"
+      },
+      {
+        "title": "Global Network",
+        "description": "Strong international partnerships and resources"
+      },
+      {
+        "title": "Long-term Vision",
+        "description": "Committed to sustainable growth and Vision 2030 alignment"
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Governance",
+        "value": "100%"
+      },
+      {
+        "label": "Transparency",
+        "value": "100%"
+      },
+      {
+        "label": "Quality",
+        "value": "98%"
+      },
+      {
+        "label": "Client Satisfaction",
+        "value": "98%"
+      }
+    ],
     "statistics": [
       {
         "number": "15",
@@ -176,6 +225,12 @@
     "rights": "All rights reserved",
     "privacy": "Privacy Policy",
     "disclaimer": "Disclaimer",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "companyName": "Rseem Investment Company",
+    "newsletterTitle": "Stay Updated",
+    "newsletterText": "Subscribe to our newsletter for the latest investment insights.",
+    "emailPlaceholder": "Your email",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn"
   }
 }

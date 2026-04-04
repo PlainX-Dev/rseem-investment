@@ -3,6 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
+import React from 'react';
 import { Rocket, Building2, TrendingUp, Compass, ChevronRight } from 'lucide-react';
 
 const iconMap = {
@@ -14,7 +16,7 @@ const iconMap = {
 
 const Sectors = () => {
   const t = useTranslations('sectors');
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 180px 0px' });
   const [expandedSector, setExpandedSector] = React.useState<string | null>(null);
 
   const containerVariants = {
@@ -65,6 +67,7 @@ const Sectors = () => {
           {t.raw('sectors_list').map((sector: any, idx: number) => {
             const Icon = iconMap[sector.icon as keyof typeof iconMap];
             const isExpanded = expandedSector === sector.id;
+            const sectorImages = ['/images/flip2.jpg', '/images/flip3.jpg', '/images/slider5.jpg', '/images/service.jpg'];
 
             return (
               <motion.div
@@ -77,6 +80,16 @@ const Sectors = () => {
                 <motion.div
                   className="relative overflow-hidden rounded-xl border border-rseem-border/50 bg-gradient-to-br from-white to-rseem-light p-8 shadow-lg hover:shadow-xl transition-all h-full flex flex-col"
                 >
+                  <div className="relative h-40 rounded-lg overflow-hidden mb-5">
+                    <Image
+                      src={sectorImages[idx % sectorImages.length]}
+                      alt={sector.title}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-rseem-dark/30" />
+                  </div>
+
                   {/* Background accent */}
                   <div className="absolute top-0 ltr:right-0 rtl:left-0 w-32 h-32 bg-rseem-teal/5 rounded-full -translate-y-1/2 group-hover:scale-150 transition-transform duration-500" />
 
@@ -129,7 +142,7 @@ const Sectors = () => {
                     whileHover={{ x: 4 }}
                     className="flex items-center gap-2 text-rseem-teal font-semibold text-sm group/btn"
                   >
-                    Learn More
+                    {t('learnMore')}
                     <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </motion.button>
                 </motion.div>
@@ -146,7 +159,7 @@ const Sectors = () => {
           className="text-center pt-12 border-t border-rseem-border"
         >
           <p className="text-lg text-rseem-gray mb-6">
-            Ready to explore partnership opportunities?
+            {t('partnershipPrompt')}
           </p>
           <motion.a
             href="/contact"
@@ -154,7 +167,7 @@ const Sectors = () => {
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-rseem-teal to-rseem-emerald text-white rounded-lg font-bold shadow-lg hover:shadow-xl transition-all"
           >
-            Schedule Your Consultation
+            {t('consultationCta')}
             <ChevronRight className="w-5 h-5" />
           </motion.a>
         </motion.div>
@@ -162,6 +175,4 @@ const Sectors = () => {
     </section>
   );
 };
-
-import React from 'react';
 export default Sectors;

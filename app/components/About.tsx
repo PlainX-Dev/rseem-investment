@@ -1,8 +1,9 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 import { Shield, Star, Zap, Brain, Users, Target } from 'lucide-react';
 
 const iconMap = {
@@ -16,7 +17,8 @@ const iconMap = {
 
 const About = () => {
   const t = useTranslations('about');
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const locale = useLocale();
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 180px 0px' });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -90,6 +92,21 @@ const About = () => {
           </motion.div>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-16 shadow-2xl"
+        >
+          <Image
+            src="/images/about-10.png"
+            alt="Rseem Investment"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-rseem-dark/35" />
+        </motion.div>
+
         {/* Core Values */}
         <motion.div
           ref={ref}
@@ -99,7 +116,7 @@ const About = () => {
           className="mb-16"
         >
           <h3 className="text-3xl md:text-4xl font-bold font-display text-center text-rseem-dark mb-12">
-            Core Values & Strengths
+            {locale === 'ar' ? 'القيم الجوهرية ونقاط القوة' : 'Core Values & Strengths'}
           </h3>
 
           <motion.div

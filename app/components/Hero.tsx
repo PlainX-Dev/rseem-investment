@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 
@@ -36,32 +37,27 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0.3, scale: 0.8 }}
           animate={{ 
-            opacity: 0.6, 
+            opacity: 0.45,
             scale: 1,
-            y: [0, 20, 0],
+            y: [0, 10, 0],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-20 -right-32 w-96 h-96 bg-rseem-teal/30 rounded-full filter blur-3xl"
+          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-20 -right-24 w-72 h-72 bg-rseem-teal/25 rounded-full filter blur-2xl"
         />
         <motion.div
           initial={{ opacity: 0.3, scale: 0.8 }}
           animate={{ 
-            opacity: 0.5, 
+            opacity: 0.4,
             scale: 1,
-            y: [0, -20, 0],
+            y: [0, -10, 0],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-          className="absolute bottom-20 -left-32 w-96 h-96 bg-rseem-emerald/20 rounded-full filter blur-3xl"
+          transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+          className="absolute bottom-20 -left-24 w-72 h-72 bg-rseem-emerald/20 rounded-full filter blur-2xl"
         />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center"
-        >
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left Column - Content */}
           <motion.div variants={itemVariants} className="space-y-6 text-white">
             {/* Badge */}
@@ -71,7 +67,7 @@ const Hero = () => {
             >
               <span className="w-2 h-2 bg-rseem-gold rounded-full animate-pulse" />
               <span className="text-sm font-semibold text-rseem-gold">
-                رؤية 2030 | Vision 2030
+                {t('badge')}
               </span>
             </motion.div>
 
@@ -132,9 +128,9 @@ const Hero = () => {
               className="grid grid-cols-3 gap-4 pt-8 border-t border-rseem-teal/20"
             >
               {[
-                { number: '15+', label: 'Years' },
-                { number: '50+', label: 'Investments' },
-                { number: '200+', label: 'Partners' },
+                { number: '15+', label: t('statsYears') },
+                { number: '50+', label: t('statsInvestments') },
+                { number: '200+', label: t('statsPartners') },
               ].map((stat, idx) => (
                 <div key={idx} className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-rseem-gold">
@@ -151,12 +147,22 @@ const Hero = () => {
             variants={itemVariants}
             className="hidden lg:flex items-center justify-center"
           >
-            {/* Animated cards stack */}
-            <div className="relative w-full max-w-md h-96">
+            <div className="relative w-full max-w-xl h-[30rem]">
+              <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
+                <Image
+                  src="/images/slide11.jpg"
+                  alt="Rseem corporate visual"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-rseem-dark/75 via-rseem-dark/25 to-transparent" />
+              </div>
+
               {[
-                { delay: 0, color: 'from-rseem-teal', title: 'Venture Capital' },
-                { delay: 0.2, color: 'from-rseem-emerald', title: 'Private Equity' },
-                { delay: 0.4, color: 'from-rseem-gold', title: 'Real Estate' },
+                { delay: 0, title: t('cardVenture'), image: '/images/flip2.jpg' },
+                { delay: 0.2, title: t('cardPrivateEquity'), image: '/images/flip3.jpg' },
+                { delay: 0.4, title: t('cardRealEstate'), image: '/images/flip4.jpg' },
               ].map((card, idx) => (
                 <motion.div
                   key={idx}
@@ -168,12 +174,15 @@ const Hero = () => {
                   }}
                   transition={{ delay: card.delay + 0.5, duration: 0.6 }}
                   whileHover={{ rotateZ: 0, y: -10 }}
-                  className={`absolute w-full h-40 bg-gradient-to-br ${card.color} to-transparent rounded-xl border border-white/10 backdrop-blur-sm p-6 shadow-2xl flex items-end justify-start`}
+                  className="absolute w-64 h-36 rounded-xl border border-white/20 overflow-hidden shadow-2xl"
                   style={{
-                    top: `${idx * 60}px`,
+                    top: `${idx * 74 + 30}px`,
+                    right: `${idx * 24}px`,
                   }}
                 >
-                  <h3 className="text-white font-bold text-lg">{card.title}</h3>
+                  <Image src={card.image} alt={card.title} fill className="object-cover" />
+                  <div className="absolute inset-0 bg-black/35" />
+                  <h3 className="absolute bottom-3 left-3 right-3 text-white font-bold text-base">{card.title}</h3>
                 </motion.div>
               ))}
             </div>
@@ -186,7 +195,7 @@ const Hero = () => {
           transition={{ duration: 2, repeat: Infinity }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
-          <span className="text-gray-400 text-sm font-medium">Scroll to explore</span>
+          <span className="text-gray-400 text-sm font-medium">{t('scrollHint')}</span>
           <ArrowDown className="w-5 h-5 text-rseem-gold" />
         </motion.div>
       </div>

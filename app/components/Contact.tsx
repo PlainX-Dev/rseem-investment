@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
@@ -8,7 +8,9 @@ import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 const Contact = () => {
   const t = useTranslations('contact');
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const locale = useLocale();
+  const isArabic = locale === 'ar';
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 180px 0px' });
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -93,19 +95,19 @@ const Contact = () => {
           {[
             {
               icon: Phone,
-              title: 'Phone',
+              title: isArabic ? 'الهاتف' : 'Phone',
               content: t('info.phone'),
               href: 'tel:+966555483247',
             },
             {
               icon: Mail,
-              title: 'Email',
+              title: isArabic ? 'البريد الإلكتروني' : 'Email',
               content: t('info.email'),
               href: 'mailto:info@rseem.com',
             },
             {
               icon: MapPin,
-              title: 'Address',
+              title: isArabic ? 'العنوان' : 'Address',
               content: t('info.address'),
               href: '#',
             },
@@ -139,7 +141,7 @@ const Contact = () => {
         >
           {/* Contact Form */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold text-rseem-dark mb-6">Send us a Message</h3>
+            <h3 className="text-2xl font-bold text-rseem-dark mb-6">{isArabic ? 'أرسل لنا رسالة' : 'Send us a Message'}</h3>
             <form onSubmit={handleSubmit} className="space-y-5">
               {[
                 { name: 'name', label: t('form.name'), type: 'text' },
@@ -153,19 +155,19 @@ const Contact = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="relative"
+                  className="space-y-2"
                 >
+                  <label className="block text-sm font-semibold text-rseem-dark">
+                    {field.label}
+                  </label>
                   <input
                     type={field.type}
                     name={field.name}
                     placeholder={field.label}
                     value={formState[field.name as keyof typeof formState]}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-rseem-border/50 focus:border-rseem-teal focus:outline-none transition-colors peer placeholder-transparent"
+                    className="w-full px-4 py-3 rounded-lg border border-rseem-border/50 focus:border-rseem-teal focus:outline-none transition-colors placeholder:text-rseem-gray/60 rtl:text-right ltr:text-left"
                   />
-                  <label className="absolute left-4 top-3 text-rseem-gray text-sm peer-placeholder-shown:text-base peer-placeholder-shown:top-3.5 peer-focus:text-sm peer-focus:top-1 transition-all pointer-events-none">
-                    {field.label}
-                  </label>
                 </motion.div>
               ))}
 
@@ -174,19 +176,19 @@ const Contact = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                 transition={{ delay: 0.25 }}
-                className="relative"
+                className="space-y-2"
               >
+                <label className="block text-sm font-semibold text-rseem-dark">
+                  {t('form.message')}
+                </label>
                 <textarea
                   name="message"
                   placeholder={t('form.message')}
                   value={formState.message}
                   onChange={handleChange}
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-rseem-border/50 focus:border-rseem-teal focus:outline-none transition-colors resize-none peer placeholder-transparent"
+                  className="w-full px-4 py-3 rounded-lg border border-rseem-border/50 focus:border-rseem-teal focus:outline-none transition-colors resize-none placeholder:text-rseem-gray/60 rtl:text-right ltr:text-left"
                 />
-                <label className="absolute left-4 top-3 text-rseem-gray text-sm peer-placeholder-shown:text-base peer-focus:text-sm peer-focus:top-1 transition-all pointer-events-none">
-                  {t('form.message')}
-                </label>
               </motion.div>
 
               {/* Submit Button */}
@@ -228,7 +230,7 @@ const Contact = () => {
             <div className="p-8 rounded-xl bg-white border border-rseem-border/50 shadow-lg">
               <div className="flex items-center gap-3 mb-4">
                 <Clock className="w-6 h-6 text-rseem-teal" />
-                <h4 className="text-lg font-bold text-rseem-dark">Office Hours</h4>
+                <h4 className="text-lg font-bold text-rseem-dark">{isArabic ? 'ساعات العمل' : 'Office Hours'}</h4>
               </div>
               <p className="text-rseem-gray">{t('info.hours')}</p>
               <p className="text-rseem-gray mt-2 text-sm">{t('info.timezone')}</p>
@@ -249,11 +251,11 @@ const Contact = () => {
 
             {/* Social Links */}
             <div>
-              <h4 className="text-lg font-bold text-rseem-dark mb-4">Follow Us</h4>
+              <h4 className="text-lg font-bold text-rseem-dark mb-4">{isArabic ? 'تابعنا' : 'Follow Us'}</h4>
               <div className="flex gap-4">
                 {[
-                  { name: 'Twitter', url: 'https://twitter.com/RSEEMInvest' },
-                  { name: 'LinkedIn', url: 'https://linkedin.com/company/rseem-investment' },
+                  { name: isArabic ? 'تويتر' : 'Twitter', url: 'https://twitter.com/RSEEMInvest' },
+                  { name: isArabic ? 'لينكدإن' : 'LinkedIn', url: 'https://linkedin.com/company/rseem-investment' },
                 ].map((social, idx) => (
                   <motion.a
                     key={idx}

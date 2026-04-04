@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
@@ -15,7 +15,8 @@ const iconMap = {
 
 const SectorsContent = () => {
   const t = useTranslations('sectors');
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const locale = useLocale();
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 180px 0px' });
   const [expandedSector, setExpandedSector] = useState<string | null>(null);
 
   return (
@@ -77,7 +78,7 @@ const SectorsContent = () => {
                   className="overflow-hidden"
                 >
                   <div className="p-8 bg-gradient-to-br from-rseem-teal/5 to-rseem-emerald/5 border-x border-b border-rseem-border/50">
-                    <h4 className="text-lg font-bold text-rseem-dark mb-6">Our Services</h4>
+                    <h4 className="text-lg font-bold text-rseem-dark mb-6">{locale === 'ar' ? 'خدماتنا' : 'Our Services'}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {sector.services.map((service: string, serviceIdx: number) => (
                         <motion.div
@@ -107,7 +108,7 @@ const SectorsContent = () => {
           className="text-center mt-20 pt-16 border-t border-rseem-border"
         >
           <p className="text-lg text-rseem-gray mb-6">
-            Ready to explore investment opportunities with Rseem?
+            {t('partnershipPrompt')}
           </p>
           <motion.a
             href="/contact"
@@ -115,7 +116,7 @@ const SectorsContent = () => {
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-rseem-teal to-rseem-emerald text-white rounded-lg font-bold shadow-lg hover:shadow-xl transition-all"
           >
-            Get in Touch
+            {t('consultationCta')}
             <ChevronDown className="w-5 h-5 -rotate-90" />
           </motion.a>
         </motion.div>

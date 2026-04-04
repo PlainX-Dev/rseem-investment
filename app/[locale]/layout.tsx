@@ -1,15 +1,15 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 
 const locales = ['en', 'ar'];
 
-export const dynamic = 'force-dynamic';
-
 interface Props {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: { locale: string };
 }
 
 export async function generateStaticParams() {
@@ -27,19 +27,22 @@ export default async function LocaleLayout({
   children,
   params,
 }: Props) {
-  const { locale } = await params;
+  const { locale } = params;
 
   if (!locales.includes(locale)) {
     notFound();
   }
 
+  setRequestLocale(locale);
+  const messages = await getMessages();
+
   return (
-    <>
+    <NextIntlClientProvider messages={messages}>
       <Navbar locale={locale} />
       <main className="min-h-screen">
         {children}
       </main>
       <Footer locale={locale} />
-    </>
+    </NextIntlClientProvider>
   );
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Menu, X, Globe } from 'lucide-react';
 
@@ -50,7 +51,7 @@ const Navbar = ({ locale }: NavbarProps) => {
       transition={{ duration: 0.5 }}
       className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'backdrop-blur-md bg-white/10 border-b border-rseem-border/20 shadow-lg'
+          ? 'backdrop-blur-md bg-white/80 border-b border-rseem-border/40 shadow-lg'
           : 'bg-transparent'
       }`}
     >
@@ -62,12 +63,17 @@ const Navbar = ({ locale }: NavbarProps) => {
             transition={{ duration: 0.2 }}
           >
             <Link href="/" className="flex items-center group">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-gradient-to-br from-rseem-teal to-rseem-emerald rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">R</span>
-                </div>
-                <div className="text-lg font-bold text-rseem-navy group-hover:text-rseem-teal transition-colors">
-                  Rseem
+              <div className="flex items-center gap-2 rounded-xl bg-white/90 border border-rseem-border/60 px-2 py-1 shadow-sm">
+                <Image
+                  src="/images/slogo.png"
+                  alt="Rseem Investment"
+                  width={140}
+                  height={40}
+                  className="h-10 w-auto"
+                  priority
+                />
+                <div className="text-lg font-bold text-rseem-navy group-hover:text-rseem-teal transition-colors hidden sm:block">
+                  {locale === 'ar' ? 'رَسِيمْ' : 'Rseem'}
                 </div>
               </div>
             </Link>

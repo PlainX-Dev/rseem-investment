@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const AnimatedCounter = ({ target, duration = 2000 }: { target: number; duration?: number }) => {
   const [count, setCount] = useState(0);
-  const { ref, inView } = useInView({ threshold: 0.5, triggerOnce: true });
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 220px 0px' });
 
   useEffect(() => {
     if (!inView) return;
@@ -34,7 +34,7 @@ const AnimatedCounter = ({ target, duration = 2000 }: { target: number; duration
 
 const Why = () => {
   const t = useTranslations('why');
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const { ref, inView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '0px 0px 180px 0px' });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -120,25 +120,8 @@ const Why = () => {
         >
           {/* Left - Benefits */}
           <div className="space-y-6">
-            <h3 className="text-3xl font-bold font-display">What Sets Us Apart</h3>
-            {[
-              {
-                title: 'Strategic Expertise',
-                description: 'Deep market knowledge and proven investment strategies',
-              },
-              {
-                title: 'Local Excellence',
-                description: 'Unmatched understanding of the Saudi business ecosystem',
-              },
-              {
-                title: 'Global Network',
-                description: 'Strong international partnerships and resources',
-              },
-              {
-                title: 'Long-term Vision',
-                description: 'Committed to sustainable growth and Vision 2030 alignment',
-              },
-            ].map((item, idx) => (
+            <h3 className="text-3xl font-bold font-display">{t('differentiatorsTitle')}</h3>
+            {t.raw('differentiators').map((item: any, idx: number) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: -20 }}
@@ -165,12 +148,7 @@ const Why = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-rseem-teal/20 to-rseem-emerald/20 rounded-xl blur-2xl" />
             <div className="relative p-8 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md">
               <div className="space-y-4">
-                {[
-                  { label: 'Governance', value: '100%' },
-                  { label: 'Transparency', value: '100%' },
-                  { label: 'Quality', value: '98%' },
-                  { label: 'Client Satisfaction', value: '98%' },
-                ].map((metric, idx) => (
+                {t.raw('metrics').map((metric: any, idx: number) => (
                   <div key={idx}>
                     <div className="flex justify-between mb-2">
                       <span className="font-semibold">{metric.label}</span>
@@ -199,7 +177,7 @@ const Why = () => {
           className="text-center"
         >
           <p className="text-lg text-gray-200 mb-6">
-            Ready to partner with a leader in Saudi investment?
+            {t('readyPrompt')}
           </p>
           <motion.a
             href="/contact"

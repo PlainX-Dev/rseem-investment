@@ -1,8 +1,13 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 
 const SectorsHero = () => {
+  const locale = useLocale();
+  const t = useTranslations('sectors');
+  const isArabic = locale === 'ar';
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-rseem-dark via-rseem-navy to-rseem-dark pt-20">
       {/* Background decorations */}
@@ -33,7 +38,7 @@ const SectorsHero = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rseem-teal/10 border border-rseem-teal/30 w-fit mx-auto"
           >
             <span className="w-2 h-2 bg-rseem-gold rounded-full animate-pulse" />
-            <span className="text-sm font-semibold text-rseem-gold">Our Expertise</span>
+            <span className="text-sm font-semibold text-rseem-gold">{isArabic ? 'خبراتنا' : 'Our Expertise'}</span>
           </motion.div>
 
           <motion.h1
@@ -42,7 +47,7 @@ const SectorsHero = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight font-display"
           >
-            Investment Sectors
+            {t('title')}
           </motion.h1>
 
           <motion.p
@@ -51,7 +56,7 @@ const SectorsHero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl text-rseem-gold font-semibold"
           >
-            Diverse Opportunities, Unified Excellence
+            {t('subtitle')}
           </motion.p>
 
           <motion.p
@@ -60,7 +65,7 @@ const SectorsHero = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-lg text-gray-200 leading-relaxed max-w-2xl mx-auto"
           >
-            Explore our carefully selected investment sectors designed to build distinctive value for our investors and partners.
+            {t('description')}
           </motion.p>
         </motion.div>
       </div>

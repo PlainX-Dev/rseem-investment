@@ -1,9 +1,13 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
 import Contact from '@/app/components/Contact';
 
 const ContactHero = () => {
+  const locale = useLocale();
+  const isArabic = locale === 'ar';
+
   return (
     <>
       {/* Hero Section */}
@@ -36,7 +40,7 @@ const ContactHero = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rseem-teal/10 border border-rseem-teal/30 w-fit mx-auto"
             >
               <span className="w-2 h-2 bg-rseem-gold rounded-full animate-pulse" />
-              <span className="text-sm font-semibold text-rseem-gold">Get In Touch</span>
+              <span className="text-sm font-semibold text-rseem-gold">{isArabic ? 'تواصل معنا' : 'Get In Touch'}</span>
             </motion.div>
 
             <motion.h1
@@ -45,7 +49,7 @@ const ContactHero = () => {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight font-display"
             >
-              Contact Rseem
+              {isArabic ? 'اتصل بـ رَسِيمْ' : 'Contact Rseem'}
             </motion.h1>
 
             <motion.p
@@ -54,7 +58,7 @@ const ContactHero = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl md:text-2xl text-rseem-gold font-semibold"
             >
-              We're Ready to Partner
+              {isArabic ? 'نحن جاهزون للشراكة' : "We're Ready to Partner"}
             </motion.p>
 
             <motion.p
@@ -63,7 +67,7 @@ const ContactHero = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-lg text-gray-200 leading-relaxed max-w-2xl mx-auto"
             >
-              Have questions about our investment opportunities? Our team is ready to discuss how Rseem can support your growth and vision.
+              {isArabic ? 'هل لديك استفسارات حول فرصنا الاستثمارية؟ فريقنا جاهز لمناقشة كيف يمكن لـ رَسِيمْ دعم نموك ورؤيتك.' : 'Have questions about our investment opportunities? Our team is ready to discuss how Rseem can support your growth and vision.'}
             </motion.p>
           </motion.div>
         </div>
