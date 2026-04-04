@@ -3,14 +3,14 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Shield, Star, Zap, Brain, Handshake, Target } from 'lucide-react';
+import { Shield, Star, Zap, Brain, Users, Target } from 'lucide-react';
 
 const iconMap = {
   shield: Shield,
   star: Star,
   zap: Zap,
   brain: Brain,
-  handshake: Handshake,
+  handshake: Users,
   target: Target,
 };
 

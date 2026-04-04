@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Rseem Investment Company | Venture Capital & Private Equity',
   description: 'Leading venture capital and private equity firm driving innovation and growth aligned with Saudi Vision 2030.',
   keywords: 'venture capital, private equity, Saudi Arabia, investment, Vision 2030',
-  viewport: 'width=device-width, initial-scale=1',
   openGraph: {
     title: 'Rseem Investment Company',
     description: 'Venture Capital & Private Equity Excellence in Saudi Arabia',
@@ -33,6 +32,11 @@ export const metadata: Metadata = {
     description: 'Venture Capital & Private Equity Excellence',
     creator: '@RSEEMInvest',
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 interface Props {

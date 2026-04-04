@@ -5,6 +5,8 @@ import Footer from '@/app/components/Footer';
 
 const locales = ['en', 'ar'];
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
