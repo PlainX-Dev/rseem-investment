@@ -1,6 +1,5 @@
 {
   "name": "Rseem Investment",
-  "description": "Premium venture capital & private equity website",
   "version": 2,
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
