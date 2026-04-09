@@ -1,204 +1,192 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowDown } from 'lucide-react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import MagneticButton from '@/app/components/ui/MagneticButton';
+import LiquidGlassHero from '@/app/components/three/LiquidGlassHero';
+
+interface AnimatedStatProps {
+  value: number;
+  suffix?: string;
+  label: string;
+  delay?: number;
+}
+
+const AnimatedStat = ({ value, suffix = '+', label, delay = 0 }: AnimatedStatProps) => {
+  const [count, setCount] = useState(0);
+  const { ref, inView } = useInView({ threshold: 0.5, triggerOnce: true });
+
+  useEffect(() => {
+    if (!inView) return;
+
+    let frame = 0;
+    const duration = 1800;
+    let start: number | null = null;
+
+    const tick = (time: number) => {
+      if (start === null) start = time;
+      const progress = Math.min((time - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(value * eased));
+
+      if (progress < 1) {
+        frame = requestAnimationFrame(tick);
+      }
+    };
+
+    frame = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, [inView, value]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.65, delay }}
+      className="group relative overflow-hidden rounded-2xl p-[1px]"
+    >
+      <span className="pointer-events-none absolute inset-0 rounded-2xl bg-[linear-gradient(130deg,rgba(34,183,255,0.55),rgba(0,169,142,0.48),rgba(211,178,108,0.56),rgba(34,183,255,0.55))] bg-[length:240%_240%] animate-border-shift" />
+      <div className="glass-panel relative flex min-h-[8.8rem] flex-col justify-between rounded-2xl p-5">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6 }}
+          whileInView={{ opacity: [0, 0.45, 0], scale: [0.6, 1.5, 1] }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 + delay }}
+          className="pointer-events-none absolute left-1/2 top-5 h-24 w-24 -translate-x-1/2 rounded-full radial-glow-cyan blur-2xl"
+        />
+
+        <div className="relative z-10 text-4xl font-bold leading-none text-zinc-50 sm:text-5xl">
+          {count}
+          <span className="ml-1 text-3xl text-luxury-gold/95">{suffix}</span>
+        </div>
+
+        <p className="relative z-10 mt-4 text-sm text-zinc-300 sm:text-base">{label}</p>
+      </div>
+    </motion.div>
+  );
+};
 
 const Hero = () => {
   const t = useTranslations('hero');
+  const locale = useLocale();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-  };
+  const title = locale === 'ar' ? t('headline') : 'Venture Capital & Private Equity Leadership';
+  const secondCta = locale === 'ar' ? 'ابدأ شراكتك معنا' : 'Begin Your Partnership';
+  const contactHref = `/${locale}/contact`;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-rseem-dark via-rseem-navy to-rseem-dark pt-20">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Gradient orbs */}
-        <motion.div
-          initial={{ opacity: 0.3, scale: 0.8 }}
-          animate={{ 
-            opacity: 0.45,
-            scale: 1,
-            y: [0, 10, 0],
-          }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-20 -right-24 w-72 h-72 bg-rseem-teal/25 rounded-full filter blur-2xl"
-        />
-        <motion.div
-          initial={{ opacity: 0.3, scale: 0.8 }}
-          animate={{ 
-            opacity: 0.4,
-            scale: 1,
-            y: [0, -10, 0],
-          }}
-          transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-          className="absolute bottom-20 -left-24 w-72 h-72 bg-rseem-emerald/20 rounded-full filter blur-2xl"
-        />
-      </div>
+    <section className="relative flex min-h-screen items-center overflow-hidden pt-28 sm:pt-32">
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0.2, scale: 0.8 }}
+        animate={{ opacity: [0.22, 0.48, 0.26], scale: [0.88, 1.12, 0.95] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        className="pointer-events-none absolute -top-36 right-[-7rem] h-[26rem] w-[26rem] rounded-full radial-glow-emerald blur-3xl"
+      />
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0.24, scale: 0.9 }}
+        animate={{ opacity: [0.2, 0.44, 0.24], scale: [0.9, 1.15, 0.98] }}
+        transition={{ duration: 9.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+        className="pointer-events-none absolute -bottom-36 left-[-9rem] h-[28rem] w-[28rem] rounded-full radial-glow-cyan blur-3xl"
+      />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left Column - Content */}
-          <motion.div variants={itemVariants} className="space-y-6 text-white">
-            {/* Badge */}
-            <motion.div
-              variants={itemVariants}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rseem-teal/10 border border-rseem-teal/30 w-fit"
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 pb-14 sm:px-8 md:gap-16 lg:grid-cols-[1.08fr_0.92fr] lg:px-10 xl:gap-20">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="space-y-9"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
+            className="glass-panel inline-flex items-center gap-2.5 rounded-full px-5 py-2.5"
+            style={{ filter: 'url(#liquid-goo)' }}
+          >
+            <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-luxury-gold" />
+            <span className="text-xs font-semibold uppercase tracking-[0.28em] text-luxury-silver/90 sm:text-sm">
+              {t('badge')}
+            </span>
+          </motion.div>
+
+          <div className="space-y-6">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.15 }}
+              className="luxury-title max-w-3xl font-display text-[2.2rem] font-extrabold leading-[1.03] text-zinc-50 text-glow-soft sm:text-[3rem] md:text-[3.5rem] xl:text-[4.2rem]"
             >
-              <span className="w-2 h-2 bg-rseem-gold rounded-full animate-pulse" />
-              <span className="text-sm font-semibold text-rseem-gold">
-                {t('badge')}
-              </span>
-            </motion.div>
+              {title}
+            </motion.h1>
 
-            {/* Headline */}
-            <div className="space-y-4">
-              <motion.h1
-                variants={itemVariants}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight font-display"
-              >
-                {t('headline')}
-              </motion.h1>
-              <motion.p
-                variants={itemVariants}
-                className="text-xl md:text-2xl text-rseem-gold font-semibold"
-              >
-                {t('subheadline')}
-              </motion.p>
-            </div>
-
-            {/* Description */}
             <motion.p
-              variants={itemVariants}
-              className="text-lg text-gray-200 leading-relaxed max-w-lg"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.22 }}
+              className="max-w-2xl text-base leading-relaxed text-zinc-300 sm:text-lg"
             >
               {t('description')}
             </motion.p>
+          </div>
 
-            {/* CTA Buttons */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 pt-6"
-            >
-              <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(27, 94, 92, 0.3)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-rseem-teal to-rseem-emerald text-white rounded-lg font-bold text-lg shadow-xl hover:shadow-2xl transition-all"
-                >
-                  {t('cta')}
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
-              </Link>
-              <Link href="/sectors">
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(27, 94, 92, 0.2)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center justify-center gap-2 px-8 py-4 border-2 border-rseem-teal text-rseem-teal rounded-lg font-bold text-lg hover:bg-rseem-teal/10 transition-all"
-                >
-                  {t('explore')}
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
-              </Link>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-3 gap-4 pt-8 border-t border-rseem-teal/20"
-            >
-              {[
-                { number: '15+', label: t('statsYears') },
-                { number: '50+', label: t('statsInvestments') },
-                { number: '200+', label: t('statsPartners') },
-              ].map((stat, idx) => (
-                <div key={idx} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-rseem-gold">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-gray-300">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Right Column - Visual Element */}
           <motion.div
-            variants={itemVariants}
-            className="hidden lg:flex items-center justify-center"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.28 }}
+            className="flex flex-wrap items-center gap-4 pt-2"
           >
-            <div className="relative w-full max-w-xl h-[30rem]">
-              <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
-                <Image
-                  src="/images/slide11.jpg"
-                  alt="Rseem corporate visual"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-rseem-dark/75 via-rseem-dark/25 to-transparent" />
-              </div>
+            <MagneticButton href={contactHref} icon={<ArrowUpRight className="h-4 w-4" />}>
+              {t('cta')}
+            </MagneticButton>
 
-              {[
-                { delay: 0, title: t('cardVenture'), image: '/images/flip2.jpg' },
-                { delay: 0.2, title: t('cardPrivateEquity'), image: '/images/flip3.jpg' },
-                { delay: 0.4, title: t('cardRealEstate'), image: '/images/flip4.jpg' },
-              ].map((card, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20, rotateZ: -5 }}
-                  animate={{ 
-                    opacity: 1, 
-                    y: 0,
-                    rotateZ: idx * -3,
-                  }}
-                  transition={{ delay: card.delay + 0.5, duration: 0.6 }}
-                  whileHover={{ rotateZ: 0, y: -10 }}
-                  className="absolute w-64 h-36 rounded-xl border border-white/20 overflow-hidden shadow-2xl"
-                  style={{
-                    top: `${idx * 74 + 30}px`,
-                    right: `${idx * 24}px`,
-                  }}
-                >
-                  <Image src={card.image} alt={card.title} fill className="object-cover" />
-                  <div className="absolute inset-0 bg-black/35" />
-                  <h3 className="absolute bottom-3 left-3 right-3 text-white font-bold text-base">{card.title}</h3>
-                </motion.div>
-              ))}
-            </div>
+            <MagneticButton
+              href={contactHref}
+              variant="glass"
+              icon={<ArrowUpRight className="h-4 w-4" />}
+              className="shadow-[0_16px_46px_rgba(4,7,17,0.32)]"
+            >
+              {secondCta}
+            </MagneticButton>
           </motion.div>
+
+          <div className="grid max-w-3xl grid-cols-1 gap-4 pt-6 sm:grid-cols-3">
+            <AnimatedStat value={15} label={t('statsYears')} />
+            <AnimatedStat value={50} label={t('statsInvestments')} delay={0.08} />
+            <AnimatedStat value={200} label={t('statsPartners')} delay={0.16} />
+          </div>
         </motion.div>
 
-        {/* Scroll Indicator */}
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          initial={{ opacity: 0, x: 28 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.18 }}
+          className="relative"
         >
-          <span className="text-gray-400 text-sm font-medium">{t('scrollHint')}</span>
-          <ArrowDown className="w-5 h-5 text-rseem-gold" />
+          <div className="glass-panel-strong liquid-border rounded-[2rem] p-4 sm:p-5">
+            <LiquidGlassHero />
+          </div>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, y: [0, 7, 0] }}
+        transition={{ opacity: { duration: 0.55, delay: 0.55 }, y: { duration: 2, repeat: Infinity } }}
+        className="pointer-events-none absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-1.5 md:flex"
+      >
+        <span className="text-xs uppercase tracking-[0.22em] text-zinc-400">{t('scrollHint')}</span>
+        <ArrowDown className="h-4 w-4 text-luxury-gold" />
+      </motion.div>
     </section>
   );
 };

@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
+import SmoothScrollProvider from '@/app/components/SmoothScrollProvider';
 
 const locales = ['en', 'ar'];
 
@@ -38,11 +39,13 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <Navbar locale={locale} />
-      <main className="min-h-screen">
-        {children}
-      </main>
-      <Footer locale={locale} />
+      <SmoothScrollProvider>
+        <Navbar locale={locale} />
+        <main id="main-content" className="min-h-screen">
+          {children}
+        </main>
+        <Footer locale={locale} />
+      </SmoothScrollProvider>
     </NextIntlClientProvider>
   );
 }
