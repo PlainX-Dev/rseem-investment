@@ -1,12 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import MagneticButton from '@/app/components/ui/MagneticButton';
-import LiquidGlassHero from '@/app/components/three/LiquidGlassHero';
 
 interface AnimatedStatProps {
   value: number;
@@ -77,10 +77,29 @@ const AnimatedStat = ({ value, suffix = '+', label, delay = 0 }: AnimatedStatPro
 const Hero = () => {
   const t = useTranslations('hero');
   const locale = useLocale();
+  const [activeImage, setActiveImage] = useState(0);
+  const [activeCardOffset, setActiveCardOffset] = useState(0);
 
   const title = locale === 'ar' ? t('headline') : 'Venture Capital & Private Equity Leadership';
   const secondCta = locale === 'ar' ? 'ابدأ شراكتك معنا' : 'Begin Your Partnership';
   const contactHref = `/${locale}/contact`;
+
+  const showcaseImages = ['/images/slide11.jpg', '/images/slider2.jpg', '/images/slider5.jpg', '/images/service.jpg'];
+
+  const showcaseCards = [
+    { title: t('cardVenture'), image: '/images/flip2.jpg' },
+    { title: t('cardPrivateEquity'), image: '/images/flip3.jpg' },
+    { title: t('cardRealEstate'), image: '/images/flip4.jpg' },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveImage((index) => (index + 1) % showcaseImages.length);
+      setActiveCardOffset((index) => (index + 1) % showcaseCards.length);
+    }, 3800);
+
+    return () => clearInterval(interval);
+  }, [showcaseImages.length, showcaseCards.length]);
 
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden pt-28 sm:pt-32">
@@ -170,10 +189,56 @@ const Hero = () => {
           initial={{ opacity: 0, x: 28 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.18 }}
-          className="relative"
+          className="relative hidden lg:block"
         >
           <div className="glass-panel-strong liquid-border rounded-[2rem] p-4 sm:p-5">
-            <LiquidGlassHero />
+            <div className="relative h-[30rem] w-full max-w-[34rem]">
+              <div className="pointer-events-none absolute -left-8 top-10 h-44 w-44 rounded-full radial-glow-cyan blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-8 right-2 h-44 w-44 rounded-full radial-glow-emerald blur-3xl" />
+
+              <div className="absolute inset-0 overflow-hidden rounded-[1.45rem] border border-white/18 shadow-[0_30px_80px_rgba(2,6,15,0.55)]">
+                {showcaseImages.map((image, index) => (
+                  <motion.div
+                    key={image}
+                    initial={false}
+                    animate={{
+                      opacity: activeImage === index ? 1 : 0,
+                      scale: activeImage === index ? 1 : 1.03,
+                    }}
+                    transition={{ duration: 1.1, ease: 'easeInOut' }}
+                    className="absolute inset-0"
+                  >
+                    <Image src={image} alt="Rseem Investment visual" fill className="object-cover" priority={index === 0} />
+                  </motion.div>
+                ))}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(3,8,16,0.8)] via-[rgba(7,15,29,0.28)] to-[rgba(8,16,29,0.06)]" />
+              </div>
+
+              {[
+                { top: 26, right: 14, rotate: -4 },
+                { top: 122, right: 36, rotate: -8 },
+                { top: 216, right: 58, rotate: -12 },
+              ].map((position, index) => {
+                const card = showcaseCards[(index + activeCardOffset) % showcaseCards.length];
+
+                return (
+                  <motion.div
+                    key={`${card.title}-${card.image}-${index}`}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0, rotate: position.rotate }}
+                    transition={{ duration: 0.55, ease: 'easeOut' }}
+                    whileHover={{ rotate: 0, y: -8, scale: 1.02 }}
+                    className="glass-panel absolute h-28 w-56 overflow-hidden rounded-xl border-white/20"
+                    style={{ top: position.top, right: position.right }}
+                  >
+                    <Image src={card.image} alt={card.title} fill className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/15" />
+                    <p className="absolute bottom-3 left-3 right-3 text-sm font-semibold text-zinc-100">{card.title}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </motion.div>
       </div>
